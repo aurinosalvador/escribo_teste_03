@@ -12,22 +12,31 @@ class Home extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Star Wars Favorites'),
           centerTitle: true,
+          elevation: 0.0,
         ),
-        body: Center(
+        body: DefaultTabController(
+          length: 3,
           child: Column(
-            children: [
-              Text('Home Page'),
-              ElevatedButton(
-                onPressed: () async {
-                  MovieController movieController = MovieController();
-                  List<Movie> movies = await movieController.listMovies();
-
-                  for (Movie movie in movies) {
-                    print('id: ${movie.id} title: ${movie.title}');
-                  }
-                },
-                child: const Text('Test'),
+            children: <Widget>[
+              Container(
+                color: Colors.blue,
+                child: const TabBar(
+                  indicatorColor: Colors.greenAccent,
+                  tabs: <Tab>[
+                    Tab(text: 'Filmes'),
+                    Tab(text: 'Personagens'),
+                    Tab(text: 'Favoritos'),
+                  ],
+                ),
               ),
+              const Expanded(
+                  child: TabBarView(
+                children: <Widget>[
+                  Text('Teste'),
+                  Text('Teste2'),
+                  Text('Teste3'),
+                ],
+              )),
             ],
           ),
         ),
