@@ -5,9 +5,15 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text('Home Page'),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Star Wars Favorites'),
+          centerTitle: true,
+        ),
+        body: Center(
+          child: Text('Home Page'),
+        ),
       ),
     );
   }
