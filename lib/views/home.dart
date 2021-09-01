@@ -1,5 +1,6 @@
 import 'package:escribo_teste_03/controllers/movie_controller.dart';
 import 'package:escribo_teste_03/models/movie.dart';
+import 'package:escribo_teste_03/views/webview_site.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatelessWidget {
@@ -10,9 +11,19 @@ class Home extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Star Wars Favorites'),
-          centerTitle: true,
           elevation: 0.0,
+          leading: TextButton(
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (_) => WebViewSite(),
+              ),
+            ),
+            child: Text(
+              'Site Oficial',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
         ),
         body: DefaultTabController(
           length: 3,
