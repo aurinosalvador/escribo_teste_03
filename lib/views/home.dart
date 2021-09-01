@@ -1,7 +1,6 @@
-import 'dart:convert';
-
+import 'package:escribo_teste_03/controllers/movie_controller.dart';
+import 'package:escribo_teste_03/models/movie.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
@@ -20,14 +19,11 @@ class Home extends StatelessWidget {
               Text('Home Page'),
               ElevatedButton(
                 onPressed: () async {
-                  Uri url = Uri.parse('https://swapi.dev/api/people');
+                  MovieController movieController = MovieController();
+                  List<Movie> movies = await movieController.listMovies();
 
-                  Response response = await get(url);
-
-                  Map<String, dynamic> res = jsonDecode(response.body);
-
-                  for (Map<String, dynamic> people in res['results']) {
-                    // print(getId.firstMatch(people['url'])!.group(1));
+                  for (Movie movie in movies) {
+                    print('id: ${movie.id} title: ${movie.title}');
                   }
                 },
                 child: const Text('Test'),
