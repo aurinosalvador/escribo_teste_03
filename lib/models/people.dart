@@ -1,9 +1,9 @@
-class Movie {
+class People {
   final int id;
-  final String title;
+  final String name;
 
-  Movie.fromJson(Map<String, dynamic> json)
-      : title = json['title'],
+  People.fromJson(Map<String, dynamic> json)
+      : name = json['name'],
         id = RegExp(r"/\/?([0-9_\-+]+)\/?(?:\;[^\/]*)?$")
                     .firstMatch(json['url']) !=
                 null
