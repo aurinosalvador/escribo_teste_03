@@ -22,16 +22,23 @@ class _MovieContentState extends State<MovieContent> {
 
   List<Movie> movies = [];
 
+  int page = 1;
+  int totalPages = 1;
+
   @override
   void initState() {
-    super.initState();
+    loadData(page);
 
-    loadData();
+    super.initState();
   }
 
-  Future<void> loadData() async {
+  Future<void> loadData(int page) async {
+    _controller.add(MovieState.loading);
+
     MovieController movieController = MovieController();
-    movies = await movieController.listMovies();
+    movies = await movieController.listMovies(page: page);
+    totalPages = await movieController.getPagesNumber();
+
     _controller.add(MovieState.complete);
   }
 
@@ -42,17 +49,89 @@ class _MovieContentState extends State<MovieContent> {
       initialData: MovieState.loading,
       builder: (BuildContext context, AsyncSnapshot<MovieState> snapshot) {
         if (snapshot.hasData && snapshot.data == MovieState.complete) {
-          return ListView.builder(
-            itemCount: movies.length,
-            itemBuilder: (BuildContext context, int index) {
-              return ListTile(
-                title: Text(movies.elementAt(index).title),
-                trailing: GestureDetector(
-                  onTap: () => print('Favoritar'),
-                  child: const Icon(Icons.favorite_border),
+          return Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  itemCount: movies.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return ListTile(
+                      title: Text(movies.elementAt(index).title),
+                      trailing: GestureDetector(
+                        onTap: () => print('Favoritar'),
+                        child: const Icon(Icons.favorite_border),
+                      ),
+                    );
+                  },
                 ),
-              );
-            },
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    /// Move to initial Page
+                    ElevatedButton(
+                      onPressed: page != 1
+                          ? () {
+                              setState(() {
+                                page = 1;
+
+                                loadData(page);
+                              });
+                            }
+                          : null,
+                      child: const Text('<<'),
+                    ),
+
+                    /// Move to pev Page
+                    ElevatedButton(
+                      onPressed: page != 1
+                          ? () {
+                              setState(() {
+                                page--;
+
+                                loadData(page);
+                              });
+                            }
+                          : null,
+                      child: const Text('<'),
+                    ),
+
+                    /// Info
+                    Text('$page de $totalPages'),
+
+                    /// Move to next Page
+                    ElevatedButton(
+                      onPressed: page != totalPages
+                          ? () {
+                              setState(() {
+                                page++;
+
+                                loadData(page);
+                              });
+                            }
+                          : null,
+                      child: const Text('>'),
+                    ),
+
+                    /// Move to last Page
+                    ElevatedButton(
+                      onPressed: page != totalPages
+                          ? () {
+                              setState(() {
+                                page = totalPages;
+
+                                loadData(page);
+                              });
+                            }
+                          : null,
+                      child: const Text('>>'),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           );
         }
 
@@ -68,5 +147,11 @@ class _MovieContentState extends State<MovieContent> {
         );
       },
     );
+  }
+
+  @override
+  void dispose() {
+    _controller.close();
+    super.dispose();
   }
 }
