@@ -1,3 +1,5 @@
+import 'package:escribo_teste_03/controllers/favorite_controller.dart';
+import 'package:escribo_teste_03/models/favorite.dart';
 import 'package:escribo_teste_03/widgets/header.dart';
 import 'package:escribo_teste_03/widgets/movie_content.dart';
 import 'package:escribo_teste_03/widgets/people_content.dart';
@@ -26,12 +28,50 @@ class Home extends StatelessWidget {
                   ],
                 ),
               ),
-              const Expanded(
+              Expanded(
                 child: TabBarView(
                   children: <Widget>[
-                    MovieContent(),
-                    PeopleContent(),
-                    Text('Teste3'),
+                    const MovieContent(),
+                    const PeopleContent(),
+                    Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () async {
+                              FavoriteController favoriteController =
+                                  FavoriteController();
+
+                              favoriteController.getFavorites();
+                            },
+                            child: Text('Get'),
+                          ),
+                          ElevatedButton(
+                            onPressed: () async {
+                              FavoriteController favoriteController =
+                                  FavoriteController();
+
+                              Favorite favorite = Favorite(1, 'Teste', 'movie');
+
+                              favoriteController.insertFavorite(favorite);
+                            },
+                            child: Text('Insert'),
+                          ),
+                          ElevatedButton(
+                            onPressed: () async {
+                              FavoriteController favoriteController =
+                                  FavoriteController();
+
+                              Favorite favorite = Favorite(2, 'Teste', 'movie');
+
+                              favoriteController
+                                  .deleteFavorite(favorite.getId());
+                            },
+                            child: Text('Delete'),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),

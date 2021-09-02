@@ -10,7 +10,7 @@ class DbHelper {
   static Future<void> deleteTables(Database db) async {
     Batch batch = db.batch();
 
-    batch.execute('DELETE FROM sys_avatar');
+    batch.execute('DELETE FROM sys_avatars');
     batch.execute('DELETE FROM sys_favorites');
 
     await batch.commit();
@@ -39,7 +39,7 @@ class DbHelper {
   Future<void> _onCreate(Database db, int version) async {
     Batch batch = db.batch();
 
-    batch.execute('CREATE TABLE IF NOT EXISTS sys_avatar ('
+    batch.execute('CREATE TABLE IF NOT EXISTS sys_avatars ('
         '"id" INTEGER PRIMARY KEY NOT NULL,'
         '"avatar" TEXT NOT NULL);');
 
@@ -54,7 +54,7 @@ class DbHelper {
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
     Batch batch = db.batch();
 
-    batch.execute('DROP TABLE IF EXISTS sys_avatar');
+    batch.execute('DROP TABLE IF EXISTS sys_avatars');
     batch.execute('DROP TABLE IF EXISTS sys_favorites');
 
     await batch.commit();
