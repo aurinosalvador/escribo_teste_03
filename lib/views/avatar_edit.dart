@@ -9,6 +9,7 @@ class AvatarEdit extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        ///TODO: transformar em StreamBuilder
         body: Column(
           children: <Widget>[
             const Header(type: 'avatarview'),

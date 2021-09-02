@@ -20,6 +20,8 @@ dependencies:
   sqflite: ^2.0.0+4
   # https://pub.dev/packages/http
   http: ^0.13.3
+  # https://pub.dev/packages/path
+  path: ^1.8.0
 
 
   cupertino_icons: ^1.0.2
