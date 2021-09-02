@@ -20,7 +20,7 @@ class PeopleController {
     return pages.ceil();
   }
 
-  Future<List<People>> listMovies({int page = 1}) async {
+  Future<List<People>> listPeoples({int page = 1}) async {
     Uri url = Uri.parse(baseUrl + 'people/?page=$page');
     List<People> people = [];
 

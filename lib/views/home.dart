@@ -1,5 +1,6 @@
 import 'package:escribo_teste_03/widgets/header.dart';
 import 'package:escribo_teste_03/widgets/movie_content.dart';
+import 'package:escribo_teste_03/widgets/people_content.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatelessWidget {
@@ -29,7 +30,7 @@ class Home extends StatelessWidget {
                 child: TabBarView(
                   children: <Widget>[
                     MovieContent(),
-                    Text('Teste2'),
+                    PeopleContent(),
                     Text('Teste3'),
                   ],
                 ),
