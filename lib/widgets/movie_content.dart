@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:escribo_teste_03/controllers/movie_controller.dart';
 import 'package:escribo_teste_03/models/movie.dart';
+import 'package:escribo_teste_03/widgets/custom_pagination.dart';
 import 'package:flutter/material.dart';
 
 enum MovieState {
@@ -67,68 +68,10 @@ class _MovieContentState extends State<MovieContent> {
               ),
               Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    /// Move to initial Page
-                    ElevatedButton(
-                      onPressed: page != 1
-                          ? () {
-                              setState(() {
-                                page = 1;
-
-                                loadData(page);
-                              });
-                            }
-                          : null,
-                      child: const Text('<<'),
-                    ),
-
-                    /// Move to pev Page
-                    ElevatedButton(
-                      onPressed: page != 1
-                          ? () {
-                              setState(() {
-                                page--;
-
-                                loadData(page);
-                              });
-                            }
-                          : null,
-                      child: const Text('<'),
-                    ),
-
-                    /// Info
-                    Text('$page de $totalPages'),
-
-                    /// Move to next Page
-                    ElevatedButton(
-                      onPressed: page != totalPages
-                          ? () {
-                              setState(() {
-                                page++;
-
-                                loadData(page);
-                              });
-                            }
-                          : null,
-                      child: const Text('>'),
-                    ),
-
-                    /// Move to last Page
-                    ElevatedButton(
-                      onPressed: page != totalPages
-                          ? () {
-                              setState(() {
-                                page = totalPages;
-
-                                loadData(page);
-                              });
-                            }
-                          : null,
-                      child: const Text('>>'),
-                    ),
-                  ],
+                child: CustomPagination(
+                  page: page,
+                  totalPages: totalPages,
+                  onPressed: goToPage,
                 ),
               ),
             ],
@@ -147,6 +90,15 @@ class _MovieContentState extends State<MovieContent> {
         );
       },
     );
+  }
+
+  void goToPage(int page, int total) {
+    setState(() {
+      this.page = page;
+      totalPages = total;
+
+      loadData(page);
+    });
   }
 
   @override
