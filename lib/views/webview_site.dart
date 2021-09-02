@@ -1,3 +1,4 @@
+import 'package:escribo_teste_03/widgets/header.dart';
 import 'package:flutter/material.dart';
 
 import 'package:webview_flutter/webview_flutter.dart';
@@ -7,8 +8,19 @@ class WebViewSite extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const WebView(
-      initialUrl: 'https://www.starwars.com/community',
+    return SafeArea(
+      child: Column(
+        children: const <Widget>[
+          Header(
+            type: 'webview',
+          ),
+          Expanded(
+            child: WebView(
+              initialUrl: 'https://www.starwars.com/community',
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
