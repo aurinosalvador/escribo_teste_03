@@ -18,7 +18,7 @@ class AvatarEdit extends StatelessWidget {
             ),
             Expanded(
               child: FluttermojiCustomizer(
-                outerTitleText: '',
+                outerTitleText: 'Personalize seu Avatar',
               ),
             ),
           ],

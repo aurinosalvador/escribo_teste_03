@@ -1,7 +1,5 @@
-import 'package:escribo_teste_03/controllers/movie_controller.dart';
-import 'package:escribo_teste_03/models/movie.dart';
-import 'package:escribo_teste_03/views/webview_site.dart';
 import 'package:escribo_teste_03/widgets/header.dart';
+import 'package:escribo_teste_03/widgets/movie_content.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatelessWidget {
@@ -30,7 +28,7 @@ class Home extends StatelessWidget {
               const Expanded(
                 child: TabBarView(
                   children: <Widget>[
-                    Text('Teste'),
+                    MovieContent(),
                     Text('Teste2'),
                     Text('Teste3'),
                   ],
