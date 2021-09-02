@@ -9,17 +9,19 @@ class WebViewSite extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Column(
-        children: const <Widget>[
-          Header(
-            type: 'webview',
-          ),
-          Expanded(
-            child: WebView(
-              initialUrl: 'https://www.starwars.com/community',
+      child: Scaffold(
+        body: Column(
+          children: const <Widget>[
+            Header(
+              type: 'webview',
             ),
-          ),
-        ],
+            Expanded(
+              child: WebView(
+                initialUrl: 'https://www.starwars.com/community',
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

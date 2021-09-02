@@ -1,3 +1,5 @@
+import 'package:escribo_teste_03/views/avatar_edit.dart';
+import 'package:escribo_teste_03/views/home.dart';
 import 'package:escribo_teste_03/views/webview_site.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -32,8 +34,12 @@ class Header extends StatelessWidget {
             TextButton(
               onPressed: () {
                 isWebView
-                    ? Navigator.of(context).pop()
-                    : Navigator.of(context).push(
+                    ? Navigator.of(context).pushReplacement(
+                        MaterialPageRoute<void>(
+                          builder: (_) => const Home(),
+                        ),
+                      )
+                    : Navigator.of(context).pushReplacement(
                         MaterialPageRoute<void>(
                           builder: (_) => const WebViewSite(),
                         ),
@@ -56,7 +62,22 @@ class Header extends StatelessWidget {
             ),
 
             ///Avatar
-            FluttermojiCircleAvatar(radius: 25),
+            GestureDetector(
+              onTap: () {
+                isAvatarView
+                    ? Navigator.of(context).pushReplacement(
+                        MaterialPageRoute<void>(
+                          builder: (_) => const Home(),
+                        ),
+                      )
+                    : Navigator.of(context).pushReplacement(
+                        MaterialPageRoute<void>(
+                          builder: (_) => const AvatarEdit(),
+                        ),
+                      );
+              },
+              child: FluttermojiCircleAvatar(radius: 25),
+            ),
           ],
         ),
       ),
