@@ -1,12 +1,8 @@
-import 'package:escribo_teste_03/controllers/favorite_controller.dart';
-import 'package:escribo_teste_03/models/favorite.dart';
-import 'package:escribo_teste_03/utils/db_helper.dart';
 import 'package:escribo_teste_03/widgets/favorite_content.dart';
 import 'package:escribo_teste_03/widgets/header.dart';
 import 'package:escribo_teste_03/widgets/movie_content.dart';
 import 'package:escribo_teste_03/widgets/people_content.dart';
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);

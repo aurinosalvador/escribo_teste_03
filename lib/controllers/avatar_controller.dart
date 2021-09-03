@@ -10,7 +10,11 @@ class AvatarController {
 
     List<Map<String, dynamic>> result = await db.query('sys_avatars');
 
-    return Avatar.fromMap(result.first);
+    if (result.isEmpty) {
+      return Avatar(-1, '');
+    } else {
+      return Avatar.fromMap(result.first);
+    }
   }
 
   Future<void> insertAvatar(Avatar avatar) async {

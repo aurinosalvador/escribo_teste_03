@@ -1,3 +1,5 @@
+import 'package:escribo_teste_03/controllers/avatar_controller.dart';
+import 'package:escribo_teste_03/models/avatar.dart';
 import 'package:escribo_teste_03/views/avatar_edit.dart';
 import 'package:escribo_teste_03/views/home.dart';
 import 'package:escribo_teste_03/views/webview_site.dart';
@@ -5,20 +7,41 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttermoji/fluttermoji.dart';
 
-class Header extends StatelessWidget {
+class Header extends StatefulWidget {
   final String? type;
 
   const Header({Key? key, this.type}) : super(key: key);
+
+  @override
+  State<Header> createState() => _HeaderState();
+}
+
+class _HeaderState extends State<Header> {
+  @override
+  void initState() {
+    loadAvatar();
+
+    super.initState();
+  }
+
+  Future<void> loadAvatar() async {
+    AvatarController avatarController = AvatarController();
+    Avatar avatar = await avatarController.getAvatar();
+
+    if (avatar.getId() > -1) {
+      FluttermojiFunctions().decodeFluttermojifromString(avatar.getAvatar());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     bool isWebView = false;
     bool isAvatarView = false;
 
-    if (type != null && type!.isNotEmpty) {
-      if (type!.toLowerCase().trim() == 'webview') {
+    if (widget.type != null && widget.type!.isNotEmpty) {
+      if (widget.type!.toLowerCase().trim() == 'webview') {
         isWebView = true;
-      } else if (type!.toLowerCase().trim() == 'avatarview') {
+      } else if (widget.type!.toLowerCase().trim() == 'avatarview') {
         isAvatarView = true;
       }
     }
