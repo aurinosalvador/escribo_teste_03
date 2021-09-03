@@ -57,18 +57,6 @@ class Home extends StatelessWidget {
                             },
                             child: Text('Insert'),
                           ),
-                          ElevatedButton(
-                            onPressed: () async {
-                              FavoriteController favoriteController =
-                                  FavoriteController();
-
-                              Favorite favorite = Favorite(2, 'Teste', 'movie');
-
-                              favoriteController
-                                  .deleteFavorite(favorite.getId());
-                            },
-                            child: Text('Delete'),
-                          ),
                         ],
                       ),
                     ),

@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:escribo_teste_03/controllers/favorite_controller.dart';
 import 'package:escribo_teste_03/controllers/movie_controller.dart';
+import 'package:escribo_teste_03/models/favorite.dart';
 import 'package:escribo_teste_03/models/movie.dart';
 import 'package:escribo_teste_03/widgets/custom_pagination.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +42,13 @@ class _MovieContentState extends State<MovieContent> {
     movies = await movieController.listMovies(page: page);
     totalPages = await movieController.getPagesNumber();
 
+    FavoriteController favoriteController = FavoriteController();
+    for (Movie movie in movies) {
+      bool isFav = await favoriteController.verifyFavorite(movie.title);
+
+      movie.setFavorite(isFav);
+    }
+
     _controller.add(MovieState.complete);
   }
 
@@ -56,11 +65,14 @@ class _MovieContentState extends State<MovieContent> {
                 child: ListView.builder(
                   itemCount: movies.length,
                   itemBuilder: (BuildContext context, int index) {
+                    Movie movie = movies.elementAt(index);
                     return ListTile(
-                      title: Text(movies.elementAt(index).title),
+                      title: Text(movie.title),
                       trailing: GestureDetector(
-                        onTap: () => print('Favoritar'),
-                        child: const Icon(Icons.favorite_border),
+                        onTap: () => toogleFavorite(movie),
+                        child: Icon(movie.isFavorite()
+                            ? Icons.favorite
+                            : Icons.favorite_border),
                       ),
                     );
                   },
@@ -90,6 +102,20 @@ class _MovieContentState extends State<MovieContent> {
         );
       },
     );
+  }
+
+  void toogleFavorite(Movie movie) async {
+    FavoriteController controller = FavoriteController();
+
+    if (movie.isFavorite()) {
+      await controller.deleteFavorite(movie.title);
+      movie.setFavorite(false);
+    } else {
+      Favorite favorite = Favorite(movie.id, movie.title, 'movie');
+      await controller.insertFavorite(favorite);
+      movie.setFavorite(true);
+    }
+    setState(() {});
   }
 
   void goToPage(int page, int total) {

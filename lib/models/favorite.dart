@@ -1,30 +1,30 @@
 class Favorite {
-  int _id;
-  String _description;
-  String _type;
+  int id;
+  String description;
+  String type;
 
-  Favorite(this._id, this._description, this._type);
+  Favorite(this.id, this.description, this.type);
 
   Favorite.fromMap(Map<String, dynamic> map)
-      : _id = map['id'],
-        _description = map['description'],
-        _type = map['type'];
+      : id = map['id'],
+        description = map['description'],
+        type = map['type'];
 
-  int getId() => _id;
+  int getId() => id;
 
   void setId(int value) {
-    _id = value;
+    id = value;
   }
 
-  String getDescription() => _description;
+  String getDescription() => description;
 
   void setDescription(String value) {
-    _description = value;
+    description = value;
   }
 
-  String getType() => _type;
+  String getType() => type;
 
   void setType(String value) {
-    _type = value;
+    type = value;
   }
 }

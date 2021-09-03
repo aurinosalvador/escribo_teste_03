@@ -34,9 +34,21 @@ class FavoriteController {
     );
   }
 
-  Future<void> deleteFavorite(int id) async {
+  Future<void> deleteFavorite(String description) async {
     Database db = await DbHelper().getDb();
 
-    await db.delete('sys_favorites', where: 'id = ?', whereArgs: [id]);
+    await db.delete('sys_favorites',
+        where: 'description = ?', whereArgs: [description]);
+  }
+
+  Future<bool> verifyFavorite(String description) async {
+    List<Favorite> favorites = await getFavorites();
+
+    return favorites.indexWhere(
+              (element) => element.description == description,
+            ) >
+            0
+        ? true
+        : false;
   }
 }
