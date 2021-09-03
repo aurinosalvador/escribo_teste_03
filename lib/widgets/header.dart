@@ -82,7 +82,13 @@ class Header extends StatelessWidget {
                         ),
                       );
               },
-              child: FluttermojiCircleAvatar(radius: 25),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: isAvatarView ? Colors.lightBlue : Colors.transparent,
+                ),
+                padding: const EdgeInsets.all(1.0),
+                child: FluttermojiCircleAvatar(radius: 25),
+              ),
             ),
           ],
         ),
