@@ -1,23 +1,13 @@
-class Movie {
-  final int id;
-  final String title;
-  late bool favorite = false;
+import 'package:escribo_teste_03/models/api_model.dart';
 
-  Movie.fromJson(Map<String, dynamic> json)
-      : title = json['title'],
-        id = RegExp(r"/\/?([0-9_\-+]+)\/?(?:\;[^\/]*)?$")
-                    .firstMatch(json['url']) !=
-                null
-            ? int.parse(RegExp(r"/\/?([0-9_\-+]+)\/?(?:\;[^\/]*)?$")
-                .firstMatch(json['url'])!
-                .group(1)!)
-            : -1;
-
-  bool isFavorite() {
-    return favorite;
-  }
-
-  void setFavorite(bool fav) {
-    favorite = fav;
-  }
+class Movie extends ApiModel {
+  Movie.fromMap(Map<String, dynamic> map)
+      : super(
+          int.tryParse(Uri.parse(map['url'])
+                  .pathSegments
+                  .lastWhere((String path) => path.isNotEmpty)) ??
+              -1,
+          map['title'],
+          false,
+        );
 }

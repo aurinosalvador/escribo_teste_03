@@ -5,7 +5,7 @@ import 'package:path/path.dart';
 
 class DbHelper {
   Database? _db;
-  static const int DB_VERSION = 1;
+  static const int dbVersion = 1;
 
   static Future<void> deleteTables(Database db) async {
     Batch batch = db.batch();
@@ -27,7 +27,7 @@ class DbHelper {
 
       _db ??= await openDatabase(
         path,
-        version: DB_VERSION,
+        version: dbVersion,
         onCreate: _onCreate,
         onUpgrade: _onUpgrade,
       );

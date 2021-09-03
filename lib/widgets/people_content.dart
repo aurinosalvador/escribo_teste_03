@@ -22,7 +22,12 @@ class PeopleContent extends StatefulWidget {
 class _PeopleContentState extends State<PeopleContent> {
   final StreamController<PeopleState> _controller =
       StreamController<PeopleState>();
-  late ScrollController _scrollController;
+
+  final ScrollController _scrollController = ScrollController();
+
+  final FavoriteController favoriteController = FavoriteController();
+
+  final PeopleController peopleController = PeopleController();
 
   List<People> peoples = [];
 
@@ -33,7 +38,7 @@ class _PeopleContentState extends State<PeopleContent> {
 
   @override
   void initState() {
-    _scrollController = ScrollController()..addListener(_scrollListener);
+    _scrollController.addListener(_scrollListener);
     loadData(page);
 
     super.initState();
@@ -53,19 +58,16 @@ class _PeopleContentState extends State<PeopleContent> {
     _controller.add(PeopleState.loading);
     isLoading = true;
 
-    PeopleController peopleController = PeopleController();
     if (peoples.isEmpty) {
-      peoples = await peopleController.listPeoples(page: page);
+      peoples = await peopleController.list(page: page);
       totalPages = await peopleController.getPagesNumber();
     } else {
-      peoples.addAll(await peopleController.listPeoples(page: page));
+      peoples.addAll(await peopleController.list(page: page));
     }
 
-    FavoriteController favoriteController = FavoriteController();
     for (People people in peoples) {
-      bool isFav = await favoriteController.verifyFavorite(people.name);
-
-      people.setFavorite(isFav);
+      people.favorite =
+          await favoriteController.verifyFavorite(people.description, 'people');
     }
 
     this.page++;
@@ -129,29 +131,31 @@ class _PeopleContentState extends State<PeopleContent> {
   void toogleFavorite(People people) async {
     FavoriteController controller = FavoriteController();
 
-    if (people.isFavorite()) {
-      await controller.deleteFavorite(people.name);
-      people.setFavorite(false);
+    if (people.favorite) {
+      await controller.deleteFavorite(people.description, 'people');
+      people.favorite = false;
     } else {
-      Favorite favorite = Favorite(people.id, people.name, 'people');
+      Favorite favorite = Favorite(people.id, people.description, 'people');
       await controller.insertFavorite(favorite);
-      people.setFavorite(true);
+      people.favorite = true;
     }
-    setState(() {});
+    // setState(() {});
+    _controller.add(PeopleState.complete);
   }
 
   void goToPage(int page, int total) {
-    setState(() {
-      this.page = page;
-      totalPages = total;
-
-      loadData(page);
-    });
+    // setState(() {
+    this.page = page;
+    totalPages = total;
+    loadData(page);
+    // });
+    _controller.add(PeopleState.complete);
   }
 
   @override
   void dispose() {
     _controller.close();
+    _scrollController.dispose();
     super.dispose();
   }
 }

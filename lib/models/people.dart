@@ -1,23 +1,13 @@
-class People {
-  final int id;
-  final String name;
-  late bool favorite = false;
+import 'package:escribo_teste_03/models/api_model.dart';
 
-  People.fromJson(Map<String, dynamic> json)
-      : name = json['name'],
-        id = RegExp(r"/\/?([0-9_\-+]+)\/?(?:\;[^\/]*)?$")
-                    .firstMatch(json['url']) !=
-                null
-            ? int.parse(RegExp(r"/\/?([0-9_\-+]+)\/?(?:\;[^\/]*)?$")
-                .firstMatch(json['url'])!
-                .group(1)!)
-            : -1;
-
-  bool isFavorite() {
-    return favorite;
-  }
-
-  void setFavorite(bool fav) {
-    favorite = fav;
-  }
+class People extends ApiModel {
+  People.fromMap(Map<String, dynamic> map)
+      : super(
+          int.tryParse(Uri.parse(map['url'])
+                  .pathSegments
+                  .lastWhere((String path) => path.isNotEmpty)) ??
+              -1,
+          map['name'],
+          false,
+        );
 }

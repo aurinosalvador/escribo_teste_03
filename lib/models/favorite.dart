@@ -1,30 +1,26 @@
-class Favorite {
-  int id;
-  String description;
-  String type;
+import 'dart:ui';
 
-  Favorite(this.id, this.description, this.type);
+import 'package:escribo_teste_03/models/abstract_model.dart';
+import 'package:flutter/material.dart';
+
+class Favorite extends AbstractModel {
+  final String type;
+
+  Favorite(int id, String description, this.type) : super(id, description);
 
   Favorite.fromMap(Map<String, dynamic> map)
-      : id = map['id'],
-        description = map['description'],
-        type = map['type'];
+      : type = map['type'],
+        super(
+          map['id'],
+          map['description'],
+        );
 
-  int getId() => id;
+  @override
+  bool get favoriteType => true;
 
-  void setId(int value) {
-    id = value;
-  }
+  @override
+  bool get fav => false;
 
-  String getDescription() => description;
-
-  void setDescription(String value) {
-    description = value;
-  }
-
-  String getType() => type;
-
-  void setType(String value) {
-    type = value;
-  }
+  @override
+  Color get borderColor => type == 'people' ? Colors.green : Colors.red;
 }

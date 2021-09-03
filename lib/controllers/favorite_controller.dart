@@ -7,6 +7,7 @@ class FavoriteController {
 
   Future<List<Favorite>> getFavorites() async {
     Database db = await DbHelper().getDb();
+
     List<Favorite> favorites = [];
 
     List<Map<String, dynamic>> result = await db.query('sys_favorites');
@@ -27,28 +28,33 @@ class FavoriteController {
     await db.insert(
       'sys_favorites',
       {
-        'description': favorite.getDescription(),
-        'type': favorite.getType(),
+        'description': favorite.description,
+        'type': favorite.type,
       },
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 
-  Future<void> deleteFavorite(String description) async {
+  Future<void> deleteFavorite(String description, String type) async {
     Database db = await DbHelper().getDb();
 
-    await db.delete('sys_favorites',
-        where: 'description = ?', whereArgs: [description]);
+    await db.delete(
+      'sys_favorites',
+      where: 'description = ? AND type = ?',
+      whereArgs: [description, type],
+    );
   }
 
-  Future<bool> verifyFavorite(String description) async {
-    List<Favorite> favorites = await getFavorites();
+  Future<bool> verifyFavorite(String description, String type) async {
+    Database db = await DbHelper().getDb();
 
-    return favorites.indexWhere(
-              (element) => element.description == description,
-            ) >
-            0
-        ? true
-        : false;
+    List<Map<String, dynamic>> result = await db.query(
+      'sys_favorites',
+      where: 'description = ? AND type = ?',
+      whereArgs: [description, type],
+      limit: 1,
+    );
+
+    return result.isNotEmpty;
   }
 }

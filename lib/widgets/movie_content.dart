@@ -22,7 +22,12 @@ class MovieContent extends StatefulWidget {
 class _MovieContentState extends State<MovieContent> {
   final StreamController<MovieState> _controller =
       StreamController<MovieState>();
-  late ScrollController _scrollController;
+
+  final ScrollController _scrollController = ScrollController();
+
+  final FavoriteController favoriteController = FavoriteController();
+
+  final MovieController movieController = MovieController();
 
   List<Movie> movies = [];
 
@@ -33,7 +38,7 @@ class _MovieContentState extends State<MovieContent> {
 
   @override
   void initState() {
-    _scrollController = ScrollController()..addListener(_scrollListener);
+    _scrollController.addListener(_scrollListener);
     loadData(page);
 
     super.initState();
@@ -53,19 +58,16 @@ class _MovieContentState extends State<MovieContent> {
     _controller.add(MovieState.loading);
     isLoading = true;
 
-    MovieController movieController = MovieController();
     if (movies.isEmpty) {
-      movies = await movieController.listMovies(page: page);
+      movies = await movieController.list(page: page);
       totalPages = await movieController.getPagesNumber();
     } else {
-      movies.addAll(await movieController.listMovies(page: page));
+      movies.addAll(await movieController.list(page: page));
     }
 
-    FavoriteController favoriteController = FavoriteController();
     for (Movie movie in movies) {
-      bool isFav = await favoriteController.verifyFavorite(movie.title);
-
-      movie.setFavorite(isFav);
+      movie.favorite =
+          await favoriteController.verifyFavorite(movie.description, 'movie');
     }
 
     this.page++;
@@ -129,29 +131,31 @@ class _MovieContentState extends State<MovieContent> {
   void toogleFavorite(Movie movie) async {
     FavoriteController controller = FavoriteController();
 
-    if (movie.isFavorite()) {
-      await controller.deleteFavorite(movie.title);
-      movie.setFavorite(false);
+    if (movie.favorite) {
+      await controller.deleteFavorite(movie.description, 'movie');
+      movie.favorite = false;
     } else {
-      Favorite favorite = Favorite(movie.id, movie.title, 'movie');
+      Favorite favorite = Favorite(movie.id, movie.description, 'movie');
       await controller.insertFavorite(favorite);
-      movie.setFavorite(true);
+      movie.favorite = true;
     }
-    setState(() {});
+    // setState(() {});
+    _controller.add(MovieState.complete);
   }
 
   void goToPage(int page, int total) {
-    setState(() {
-      this.page = page;
-      totalPages = total;
-
-      loadData(page);
-    });
+    // setState(() {
+    this.page = page;
+    totalPages = total;
+    loadData(page);
+    // });
+    _controller.add(MovieState.complete);
   }
 
   @override
   void dispose() {
     _controller.close();
+    _scrollController.dispose();
     super.dispose();
   }
 }
