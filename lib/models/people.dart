@@ -1,6 +1,7 @@
 class People {
   final int id;
   final String name;
+  late bool favorite = false;
 
   People.fromJson(Map<String, dynamic> json)
       : name = json['name'],
@@ -11,4 +12,12 @@ class People {
                 .firstMatch(json['url'])!
                 .group(1)!)
             : -1;
+
+  bool isFavorite() {
+    return favorite;
+  }
+
+  void setFavorite(bool fav) {
+    favorite = fav;
+  }
 }

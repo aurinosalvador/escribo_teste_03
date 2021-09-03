@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:escribo_teste_03/controllers/favorite_controller.dart';
 import 'package:escribo_teste_03/controllers/people_controller.dart';
+import 'package:escribo_teste_03/models/favorite.dart';
 import 'package:escribo_teste_03/models/people.dart';
 import 'package:escribo_teste_03/widgets/custom_pagination.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +42,13 @@ class _PeopleContentState extends State<PeopleContent> {
     peoples = await peopleController.listPeoples(page: page);
     totalPages = await peopleController.getPagesNumber();
 
+    FavoriteController favoriteController = FavoriteController();
+    for (People people in peoples) {
+      bool isFav = await favoriteController.verifyFavorite(people.name);
+
+      people.setFavorite(isFav);
+    }
+
     _controller.add(PeopleState.complete);
   }
 
@@ -56,11 +65,14 @@ class _PeopleContentState extends State<PeopleContent> {
                 child: ListView.builder(
                   itemCount: peoples.length,
                   itemBuilder: (BuildContext context, int index) {
+                    People people = peoples.elementAt(index);
                     return ListTile(
-                      title: Text(peoples.elementAt(index).name),
+                      title: Text(people.name),
                       trailing: GestureDetector(
-                        onTap: () => print('Favoritar'),
-                        child: const Icon(Icons.favorite_border),
+                        onTap: () => toogleFavorite(people),
+                        child: Icon(people.isFavorite()
+                            ? Icons.favorite
+                            : Icons.favorite_border),
                       ),
                     );
                   },
@@ -90,6 +102,22 @@ class _PeopleContentState extends State<PeopleContent> {
         );
       },
     );
+  }
+
+  void toogleFavorite(People people) async {
+    FavoriteController controller = FavoriteController();
+
+    if (people.isFavorite()) {
+      await controller.deleteFavorite(people.name);
+      people.setFavorite(false);
+    } else {
+      Favorite favorite = Favorite(people.id, people.name, 'people');
+      await controller.insertFavorite(favorite);
+      people.setFavorite(true);
+    }
+    setState(() {});
+
+    print('favorite');
   }
 
   void goToPage(int page, int total) {

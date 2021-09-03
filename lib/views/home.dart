@@ -1,9 +1,11 @@
 import 'package:escribo_teste_03/controllers/favorite_controller.dart';
 import 'package:escribo_teste_03/models/favorite.dart';
+import 'package:escribo_teste_03/utils/db_helper.dart';
 import 'package:escribo_teste_03/widgets/header.dart';
 import 'package:escribo_teste_03/widgets/movie_content.dart';
 import 'package:escribo_teste_03/widgets/people_content.dart';
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
@@ -48,14 +50,10 @@ class Home extends StatelessWidget {
                           ),
                           ElevatedButton(
                             onPressed: () async {
-                              FavoriteController favoriteController =
-                                  FavoriteController();
-
-                              Favorite favorite = Favorite(1, 'Teste', 'movie');
-
-                              favoriteController.insertFavorite(favorite);
+                              Database db = await DbHelper().getDb();
+                              await DbHelper.deleteTables(db);
                             },
-                            child: Text('Insert'),
+                            child: Text('Delete tables'),
                           ),
                         ],
                       ),
