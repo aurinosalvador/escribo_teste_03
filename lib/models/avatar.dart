@@ -4,6 +4,10 @@ class Avatar {
 
   Avatar(this.id, this.avatar);
 
+  Avatar.fromMap(Map<String, dynamic> map)
+      : id = map['id'],
+        avatar = map['avatar'];
+
   int getId() {
     return id;
   }
