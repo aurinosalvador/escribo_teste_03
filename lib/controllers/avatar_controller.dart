@@ -23,7 +23,7 @@ class AvatarController {
     await db.insert(
       'sys_avatars',
       {
-        'description': avatar.getAvatar(),
+        'avatar': avatar.getAvatar(),
       },
       conflictAlgorithm: ConflictAlgorithm.replace,
     );

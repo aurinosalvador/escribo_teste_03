@@ -1,5 +1,5 @@
 class Avatar {
-  final int id;
+  int id;
   String avatar;
 
   Avatar(this.id, this.avatar);
@@ -10,6 +10,10 @@ class Avatar {
 
   int getId() {
     return id;
+  }
+
+  void setId(int id) {
+    this.id = id;
   }
 
   String getAvatar() {
