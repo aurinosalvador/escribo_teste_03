@@ -117,7 +117,6 @@ class _PeopleContentState extends State<PeopleContent> {
     }
     setState(() {});
 
-    print('favorite');
   }
 
   void goToPage(int page, int total) {

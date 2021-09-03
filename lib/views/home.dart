@@ -1,6 +1,7 @@
 import 'package:escribo_teste_03/controllers/favorite_controller.dart';
 import 'package:escribo_teste_03/models/favorite.dart';
 import 'package:escribo_teste_03/utils/db_helper.dart';
+import 'package:escribo_teste_03/widgets/favorite_content.dart';
 import 'package:escribo_teste_03/widgets/header.dart';
 import 'package:escribo_teste_03/widgets/movie_content.dart';
 import 'package:escribo_teste_03/widgets/people_content.dart';
@@ -30,34 +31,12 @@ class Home extends StatelessWidget {
                   ],
                 ),
               ),
-              Expanded(
+              const Expanded(
                 child: TabBarView(
                   children: <Widget>[
-                    const MovieContent(),
-                    const PeopleContent(),
-                    Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () async {
-                              FavoriteController favoriteController =
-                                  FavoriteController();
-
-                              favoriteController.getFavorites();
-                            },
-                            child: Text('Get'),
-                          ),
-                          ElevatedButton(
-                            onPressed: () async {
-                              Database db = await DbHelper().getDb();
-                              await DbHelper.deleteTables(db);
-                            },
-                            child: Text('Delete tables'),
-                          ),
-                        ],
-                      ),
-                    ),
+                    MovieContent(),
+                    PeopleContent(),
+                    FavoriteContent(),
                   ],
                 ),
               ),
