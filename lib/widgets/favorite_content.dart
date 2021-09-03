@@ -64,6 +64,7 @@ class _FavoriteContentState extends State<FavoriteContent> {
                     child: Text(
                       favorite.description,
                       textScaleFactor: 1.2,
+                      textAlign: TextAlign.center,
                     ),
                   ),
                 ),
