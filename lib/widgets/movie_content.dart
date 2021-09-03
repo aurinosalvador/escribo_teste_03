@@ -4,6 +4,7 @@ import 'package:escribo_teste_03/controllers/favorite_controller.dart';
 import 'package:escribo_teste_03/controllers/movie_controller.dart';
 import 'package:escribo_teste_03/models/favorite.dart';
 import 'package:escribo_teste_03/models/movie.dart';
+import 'package:escribo_teste_03/widgets/card_list.dart';
 import 'package:escribo_teste_03/widgets/custom_pagination.dart';
 import 'package:flutter/material.dart';
 
@@ -66,14 +67,9 @@ class _MovieContentState extends State<MovieContent> {
                   itemCount: movies.length,
                   itemBuilder: (BuildContext context, int index) {
                     Movie movie = movies.elementAt(index);
-                    return ListTile(
-                      title: Text(movie.title),
-                      trailing: GestureDetector(
-                        onTap: () => toogleFavorite(movie),
-                        child: Icon(movie.isFavorite()
-                            ? Icons.favorite
-                            : Icons.favorite_border),
-                      ),
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: CardList<Movie>(movie, onTap: toogleFavorite),
                     );
                   },
                 ),

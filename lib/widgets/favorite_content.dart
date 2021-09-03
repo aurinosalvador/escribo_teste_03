@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:escribo_teste_03/controllers/favorite_controller.dart';
 import 'package:escribo_teste_03/models/favorite.dart';
+import 'package:escribo_teste_03/widgets/card_list.dart';
 import 'package:flutter/material.dart';
 
 enum FavoriteState {
@@ -51,23 +52,7 @@ class _FavoriteContentState extends State<FavoriteContent> {
               Favorite favorite = favorites.elementAt(index);
               return Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(
-                      color:
-                          favorite.type == 'movie' ? Colors.red : Colors.green,
-                      width: 2.0,
-                    ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Text(
-                      favorite.description,
-                      textScaleFactor: 1.2,
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
+                child: CardList<Favorite>(favorite),
               );
             },
           );
