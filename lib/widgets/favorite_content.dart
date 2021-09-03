@@ -47,15 +47,17 @@ class _FavoriteContentState extends State<FavoriteContent> {
       builder: (BuildContext context, AsyncSnapshot<FavoriteState> snapshot) {
         if (snapshot.hasData && snapshot.data == FavoriteState.complete) {
           if (favorites.isNotEmpty) {
-            return ListView.builder(
-              itemCount: favorites.length,
-              itemBuilder: (BuildContext context, int index) {
-                Favorite favorite = favorites.elementAt(index);
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: CardList<Favorite>(favorite),
-                );
-              },
+            return Scrollbar(
+              child: ListView.builder(
+                itemCount: favorites.length,
+                itemBuilder: (BuildContext context, int index) {
+                  Favorite favorite = favorites.elementAt(index);
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CardList<Favorite>(favorite),
+                  );
+                },
+              ),
             );
           } else {
             return const Center(

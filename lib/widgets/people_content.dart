@@ -5,7 +5,6 @@ import 'package:escribo_teste_03/controllers/people_controller.dart';
 import 'package:escribo_teste_03/models/favorite.dart';
 import 'package:escribo_teste_03/models/people.dart';
 import 'package:escribo_teste_03/widgets/card_list.dart';
-import 'package:escribo_teste_03/widgets/custom_pagination.dart';
 import 'package:flutter/material.dart';
 
 enum PeopleState {
@@ -23,25 +22,44 @@ class PeopleContent extends StatefulWidget {
 class _PeopleContentState extends State<PeopleContent> {
   final StreamController<PeopleState> _controller =
       StreamController<PeopleState>();
+  late ScrollController _scrollController;
 
   List<People> peoples = [];
 
   int page = 1;
   int totalPages = 1;
 
+  bool isLoading = false;
+
   @override
   void initState() {
+    _scrollController = ScrollController()..addListener(_scrollListener);
     loadData(page);
 
     super.initState();
   }
 
+  void _scrollListener() {
+    if (_scrollController.offset >=
+            _scrollController.position.maxScrollExtent &&
+        !_scrollController.position.outOfRange) {
+      if (page <= totalPages && !isLoading) {
+        loadData(page);
+      }
+    }
+  }
+
   Future<void> loadData(int page) async {
     _controller.add(PeopleState.loading);
+    isLoading = true;
 
     PeopleController peopleController = PeopleController();
-    peoples = await peopleController.listPeoples(page: page);
-    totalPages = await peopleController.getPagesNumber();
+    if (peoples.isEmpty) {
+      peoples = await peopleController.listPeoples(page: page);
+      totalPages = await peopleController.getPagesNumber();
+    } else {
+      peoples.addAll(await peopleController.listPeoples(page: page));
+    }
 
     FavoriteController favoriteController = FavoriteController();
     for (People people in peoples) {
@@ -50,6 +68,8 @@ class _PeopleContentState extends State<PeopleContent> {
       people.setFavorite(isFav);
     }
 
+    this.page++;
+    isLoading = false;
     _controller.add(PeopleState.complete);
   }
 
@@ -59,43 +79,49 @@ class _PeopleContentState extends State<PeopleContent> {
       stream: _controller.stream,
       initialData: PeopleState.loading,
       builder: (BuildContext context, AsyncSnapshot<PeopleState> snapshot) {
-        if (snapshot.hasData && snapshot.data == PeopleState.complete) {
+        if (peoples.isNotEmpty) {
           return Column(
             children: [
               Expanded(
-                child: ListView.builder(
-                  itemCount: peoples.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    People people = peoples.elementAt(index);
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: CardList<People>(people, onTap: toogleFavorite),
-                    );
-                  },
+                child: Scrollbar(
+                  child: ListView.builder(
+                    controller: _scrollController,
+                    itemCount: peoples.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      People people = peoples.elementAt(index);
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CardList<People>(people, onTap: toogleFavorite),
+                      );
+                    },
+                  ),
                 ),
               ),
+              if (snapshot.data == PeopleState.loading)
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: const CircularProgressIndicator(),
+                ),
+            ],
+          );
+        } else {
+          if (snapshot.data == PeopleState.complete) {
+            return const Center(
+              child: Text('Sem Personagens'),
+            );
+          }
+
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const <Widget>[
               Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: CustomPagination(
-                  page: page,
-                  totalPages: totalPages,
-                  onPressed: goToPage,
-                ),
+                padding: EdgeInsets.only(bottom: 8.0),
+                child: CircularProgressIndicator(),
               ),
+              Text('Aguarde...'),
             ],
           );
         }
-
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const <Widget>[
-            Padding(
-              padding: EdgeInsets.only(bottom: 8.0),
-              child: CircularProgressIndicator(),
-            ),
-            Text('Aguarde...'),
-          ],
-        );
       },
     );
   }
