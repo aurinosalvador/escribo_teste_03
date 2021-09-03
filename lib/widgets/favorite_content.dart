@@ -46,16 +46,22 @@ class _FavoriteContentState extends State<FavoriteContent> {
       initialData: FavoriteState.loading,
       builder: (BuildContext context, AsyncSnapshot<FavoriteState> snapshot) {
         if (snapshot.hasData && snapshot.data == FavoriteState.complete) {
-          return ListView.builder(
-            itemCount: favorites.length,
-            itemBuilder: (BuildContext context, int index) {
-              Favorite favorite = favorites.elementAt(index);
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: CardList<Favorite>(favorite),
-              );
-            },
-          );
+          if (favorites.isNotEmpty) {
+            return ListView.builder(
+              itemCount: favorites.length,
+              itemBuilder: (BuildContext context, int index) {
+                Favorite favorite = favorites.elementAt(index);
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CardList<Favorite>(favorite),
+                );
+              },
+            );
+          } else {
+            return const Center(
+              child: Text('Sem Favoritos'),
+            );
+          }
         }
 
         return Column(

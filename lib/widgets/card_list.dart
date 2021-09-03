@@ -39,7 +39,9 @@ class CardList<T> extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: object.runtimeType != Favorite
+              ? MainAxisAlignment.spaceBetween
+              : MainAxisAlignment.center,
           children: [
             Text(
               text,

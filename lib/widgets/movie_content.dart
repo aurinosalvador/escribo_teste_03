@@ -4,9 +4,11 @@ import 'package:escribo_teste_03/controllers/favorite_controller.dart';
 import 'package:escribo_teste_03/controllers/movie_controller.dart';
 import 'package:escribo_teste_03/models/favorite.dart';
 import 'package:escribo_teste_03/models/movie.dart';
+import 'package:escribo_teste_03/utils/db_helper.dart';
 import 'package:escribo_teste_03/widgets/card_list.dart';
 import 'package:escribo_teste_03/widgets/custom_pagination.dart';
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
 
 enum MovieState {
   loading,
@@ -37,6 +39,9 @@ class _MovieContentState extends State<MovieContent> {
   }
 
   Future<void> loadData(int page) async {
+    // Database db = await DbHelper().getDb();
+    // await DbHelper.deleteTables(db);
+
     _controller.add(MovieState.loading);
 
     MovieController movieController = MovieController();
@@ -104,9 +109,11 @@ class _MovieContentState extends State<MovieContent> {
     FavoriteController controller = FavoriteController();
 
     if (movie.isFavorite()) {
+      print('Remover dos favoritos');
       await controller.deleteFavorite(movie.title);
       movie.setFavorite(false);
     } else {
+      print('inserir nos favoritos');
       Favorite favorite = Favorite(movie.id, movie.title, 'movie');
       await controller.insertFavorite(favorite);
       movie.setFavorite(true);
