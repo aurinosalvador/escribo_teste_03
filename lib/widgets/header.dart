@@ -46,8 +46,14 @@ class Header extends StatelessWidget {
                       );
               },
               child: Container(
-                padding: const EdgeInsets.all(10.0),
-                color: isWebView ? Colors.lightBlue : Colors.transparent,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black26),
+                  color: isWebView ? Colors.lightBlue : Colors.transparent,
+                ),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 16.0,
+                  horizontal: 32.0,
+                ),
                 child: Text(
                   'Site Oficial',
                   textAlign: TextAlign.center,
