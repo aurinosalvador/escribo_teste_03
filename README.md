@@ -1,16 +1,31 @@
-# escribo_teste_03
+# Escribo Teste Técnico 03
+## Descrição
+O teste consiste em desenvolver um aplicativo de listagem de filmes e personagens de Star Wars.
 
-A new Flutter project.
+### Pré-requisitos
+Antes de começar, você vai precisar ter instalado o [Git](https://git-scm.com), [Android Studio](https://developer.android.com/studio?hl=pt) ou [adb](https://developer.android.com/studio/command-line/adb?hl=pt-br) e o [Flutter](https://flutter.dev/). Para testar no dispositivo android, será necessário [habilitar o modo depuração](https://flutter-examples.com/run-test-flutter-apps-directly-on-real-android-device/).
 
-## Getting Started
+### Executando o projeto
 
-This project is a starting point for a Flutter application.
+#### Clone o repositório
+ ```bash 
+ $ git clone https://github.com/aurinosalvador/escribo_teste_03.git
+ ```
 
-A few resources to get you started if this is your first Flutter project:
+#### Acesse a pasta do projeto no terminal/cmd
+ ```bash 
+ $ cd escribo_teste_03
+ ```
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+#### Instale as dependências
+ ```bash 
+ $ flutter pub get
+ ```
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+#### Execute o projeto no android (necessário habilitar o modo depuração).
+ ```bash 
+ $ flutter run
+ ```
+
+### Se preferir baixe e instale o apk.
+[APK](https://github.com/aurinosalvador/escribo_teste_03/raw/main/app.apk/)
