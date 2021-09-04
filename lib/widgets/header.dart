@@ -68,25 +68,29 @@ class _HeaderState extends State<Header> {
                         ),
                       );
               },
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black26),
-                  color: isWebView ? Colors.lightBlue : Colors.transparent,
-                ),
-                padding: const EdgeInsets.symmetric(
-                  vertical: 16.0,
-                  horizontal: 32.0,
-                ),
-                child: Text(
-                  'Site Oficial',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    decoration: isWebView
-                        ? TextDecoration.underline
-                        : TextDecoration.none,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Container(
+                    transform: Matrix4.skewX(-0.5)..translate(8.0),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black26),
+                      color: isWebView ? Colors.lightBlue : Colors.transparent,
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 20.0,
+                      horizontal: 50.0,
+                    ),
+                    margin: const EdgeInsets.only(left: 8.0),
                   ),
-                ),
+                  const Text(
+                    'Site Oficial',
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
               ),
             ),
 
